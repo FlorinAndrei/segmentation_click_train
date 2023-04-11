@@ -1,0 +1,10 @@
+__pycache__
+bus_4in1_datasets*
+model_baseline*
+
+!README.md
+!evaluate
+!*.py
+!*.ipynb
+!.gitignore
+!.gitattributes
