@@ -1,6 +1,8 @@
 __pycache__
 bus_4in1_datasets*
 model_baseline*
+model_clicktrained*
+final_frames*
 notify_settings
 
 !README.md
