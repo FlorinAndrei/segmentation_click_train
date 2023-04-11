@@ -1,10 +1,12 @@
 __pycache__
 bus_4in1_datasets*
 model_baseline*
+notify_settings
 
 !README.md
 !evaluate
 !*.py
 !*.ipynb
+!notify.sh
 !.gitignore
 !.gitattributes
