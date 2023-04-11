@@ -6,7 +6,6 @@ from PIL import Image
 import os
 import sys
 import math
-import shutil
 from tqdm import tqdm
 import multiprocessing
 from multiprocessing import Pool
@@ -149,7 +148,21 @@ if __name__ == "__main__":
     predictions_path = sys.argv[3]
 
     segment_files = baseline_dir + "/segment_files"
-    shutil.rmtree(segment_files, ignore_errors=True)
+    segment_stats_file = baseline_dir + "/segment_stats.csv"
+
+    QUIT = False
+    quit_message = ""
+    if os.path.exists(segment_files):
+        QUIT = True
+        quit_message += f"Segment files directory {segment_files} exists. "
+    if os.path.exists(segment_stats_file):
+        QUIT = True
+        quit_message += f"Segment stats file {segment_stats_file} exists. "
+    if QUIT:
+        quit_message += "Exit."
+        print(quit_message)
+        exit()
+
     os.makedirs(segment_files, exist_ok=True)
 
     image_perf_df = pd.read_csv(baseline_dir + "/image_perf_df.csv")
@@ -187,4 +200,4 @@ if __name__ == "__main__":
 
     p.close()
     segment_stats = pd.concat([pd.concat(x) for x in mp_results]).reset_index(drop=True)
-    segment_stats.to_csv(baseline_dir + "/segment_stats.csv")
+    segment_stats.to_csv(segment_stats_file)

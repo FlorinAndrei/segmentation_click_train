@@ -295,6 +295,21 @@ def click_generator(worker_args):
 
 if __name__ == "__main__":
     baseline_dir = sys.argv[1]
+    guide_clicks_file = baseline_dir + "/guide_clicks.json"
+    energy_dir = baseline_dir + "/energy"
+
+    QUIT = False
+    quit_message = ""
+    if os.path.exists(energy_dir):
+        QUIT = True
+        quit_message += f"Segment energy maps directory {energy_dir} exists. "
+    if os.path.exists(guide_clicks_file):
+        QUIT = True
+        quit_message += f"Guide clicks file {guide_clicks_file} exists. "
+    if QUIT:
+        quit_message += "Exit."
+        print(quit_message)
+        exit()
 
     # images with IoU higher than or equal to this do not get clicks
     iou_max = 0.95
@@ -356,5 +371,5 @@ if __name__ == "__main__":
         for k, v in res.items():
             guide_clicks[k] = v
 
-    with open(baseline_dir + "/guide_clicks.json", "w") as gcf:
+    with open(guide_clicks_file, "w") as gcf:
         json.dump(guide_clicks, gcf, indent=2)
