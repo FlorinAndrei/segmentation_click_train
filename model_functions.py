@@ -2,6 +2,7 @@ import shutil
 import os
 import multiprocessing
 import numpy as np
+import pandas as pd
 from PIL import Image
 from tqdm.notebook import tqdm
 import torch
@@ -30,6 +31,7 @@ def compute_metrics(eval_pred):
         logits, labels = eval_pred
         logits_tensor = torch.from_numpy(logits)
 
+        # logits do not have the same size as the training images and labels
         # scale the logits to the size of the label
         logits_tensor = nn.functional.interpolate(
             logits_tensor,
@@ -273,6 +275,7 @@ def check_validation_performance(model, test_ds, inputs_template, save_path):
             index = test_ds[i]["index"]
 
             inputs = inputs_template
+            # fill in the contents of the template while keeping its structure unchanged
             inputs["pixel_values"] = torch.from_numpy(image[np.newaxis, ...])
             inputs.to("cuda:0")
             outputs = model(**inputs)
@@ -312,3 +315,62 @@ def check_validation_performance(model, test_ds, inputs_template, save_path):
         )
 
     return frame_performance, fold_metrics
+
+
+def generate_predictions(model, test_ds, pr_path):
+    performance_metrics_fold = {}
+
+    print(f"generate predictions, calculate performance")
+    # For simplicity, generate once an inputs template with the right structure and types.
+    # The contents will be filled in via torch.from_numpy() for each image.
+    inputs_template = feature_extractor(
+        images=test_ds[0]["pixel_values"], return_tensors="pt"
+    )
+
+    (
+        frame_metrics_checked,
+        fold_metrics_checked,
+    ) = check_validation_performance(
+        model=model,
+        test_ds=test_ds,
+        inputs_template=inputs_template,
+        save_path=pr_path,
+    )
+    frame_means = {
+        "dice": 0.0,
+        "iou": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+    }
+    fold_means = {}
+
+    i = 0
+    for k, v in frame_metrics_checked.items():
+        i += 1
+        for z, w in v.items():
+            if isinstance(w, np.ndarray):
+                v[z] = v[z].tolist()
+        performance_metrics_fold[k] = v
+        frame_means["dice"] += v["per_category_dice"][1]
+        frame_means["iou"] += v["per_category_niou"][1]
+        frame_means["precision"] += v["per_category_precision"][1]
+        frame_means["recall"] += v["per_category_recall"][1]
+
+    for k, v in frame_means.items():
+        frame_means[k] = frame_means[k] / len(frame_metrics_checked.keys())
+
+    fold_means["dice"] = fold_metrics_checked["per_category_dice"][1]
+    fold_means["iou"] = fold_metrics_checked["per_category_niou"][1]
+    fold_means["precision"] = fold_metrics_checked["per_category_precision"][1]
+    fold_means["recall"] = fold_metrics_checked["per_category_recall"][1]
+
+    print()
+    print("performance frame by frame, averaged by fold, measured with trained model:")
+    print(pd.DataFrame(frame_means, index=["values"]).T)
+    print()
+    print(
+        "mean performance per fold, from total pixel counts across the entire fold, measured with trained model"
+    )
+    print(pd.DataFrame(fold_means, index=["values"]).T)
+
+    return performance_metrics_fold
