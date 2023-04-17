@@ -21,11 +21,6 @@ metric = evaluate.load(
     num_process=multiprocessing.cpu_count(),
 )
 
-metric_hf = evaluate.load(
-    "evaluate/metrics/mean_iou",
-    num_process=multiprocessing.cpu_count(),
-)
-
 
 def compute_metrics(eval_pred):
     """
@@ -53,22 +48,11 @@ def compute_metrics(eval_pred):
             ignore_index=255,
             reduce_labels=feature_extractor.reduce_labels,
         )
-        metrics_hf = metric_hf._compute(
-            predictions=pred_labels,
-            references=labels,
-            num_labels=len(id2label),
-            ignore_index=255,
-            reduce_labels=feature_extractor.reduce_labels,
-        )
 
         mean_niou = metrics["mean_niou"]
         mean_dice = metrics["mean_dice"]
-        mean_iou_hf = metrics_hf["mean_iou"]
         metrics.update({"mean_niou": mean_niou})
         metrics.update({"mean_dice": mean_dice})
-        # IoU for index=0 is always 0, but it's never ignored
-        # multiplying by 2 to fix it (2 metrics in the average, but the 2nd is always 0)
-        metrics.update({"mean_iou_hf": mean_iou_hf})
 
         # add per category metrics as individual key-value pairs
         per_category_accuracy = metrics.pop("per_category_accuracy").tolist()
@@ -78,16 +62,12 @@ def compute_metrics(eval_pred):
         per_category_recall = metrics.pop("per_category_recall").tolist()
         total_area_label = metrics.pop("total_area_label").tolist()
         total_area_pred = metrics.pop("total_area_pred").tolist()
-        per_category_iou_hf = metrics_hf.pop("per_category_iou").tolist()
 
         metrics.update(
             {f"accuracy_{id2label[i]}": v for i, v in enumerate(per_category_accuracy)}
         )
         metrics.update(
             {f"iou_{id2label[i]}": v for i, v in enumerate(per_category_niou)}
-        )
-        metrics.update(
-            {f"iou_hf_{id2label[i]}": v for i, v in enumerate(per_category_iou_hf)}
         )
         metrics.update(
             {f"dice_{id2label[i]}": v for i, v in enumerate(per_category_dice)}
