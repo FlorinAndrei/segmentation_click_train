@@ -193,6 +193,7 @@ def train_model(
         evaluation_strategy="steps",
         save_strategy="steps",
         save_steps=20,
+        save_total_limit=5,
         eval_steps=20,
         logging_dir=logging_dir + "/fold-" + str(fold_number).zfill(10),
         logging_steps=1,
