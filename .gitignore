@@ -4,7 +4,6 @@ model_baseline*
 model_clicktrained*
 final_frames*
 notify_settings
-*.csv
 
 !README.md
 !evaluate
