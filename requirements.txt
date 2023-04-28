@@ -1,0 +1,17 @@
+albumentations==1.2.1
+datasets==2.6.1
+evaluate==0.3.0
+fastai==2.7.10
+ipython==8.7.0
+matplotlib==3.6.0
+multiprocess==0.70.13
+numpy==1.23.3
+opencv_python==4.6.0.66
+optuna==3.0.2
+pandas==1.5.0
+Pillow==9.3.0
+plotly==5.10.0
+protobuf==4.21.11
+seaborn==0.12.1
+tqdm==4.64.1
+transformers==4.24.0
