@@ -7,6 +7,7 @@ model_clicktrained*
 final_frames*
 notify_settings
 article_*_dir
+*.pkl
 
 !README.md
 !evaluate
