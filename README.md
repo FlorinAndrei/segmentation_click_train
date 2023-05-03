@@ -43,3 +43,5 @@ You can see the click-trained models responding to user feedback in these videos
 Some performance metrics: [visualize_performance.ipynb](visualize_performance.ipynb)
 
 Note: While the performance metrics (IoU, Dice) of the click-trained models appear very high, exceeding the current state of the art, this is because adding the clicks leaks data between train and test. When tested on 100% previously unseen data, the click-trained models perform the same as the baseline models.
+
+The datasets and the trained models are not included in the repo. Only the code and a few artifacts (diagrams, summary performance data) are included here.
