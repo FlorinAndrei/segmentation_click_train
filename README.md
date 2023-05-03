@@ -2,7 +2,7 @@
 
 This is an extension of my Capstone project: https://github.com/FlorinAndrei/datascience_capstone_project
 
-Both the Capstone and this project are work done within the Computer Aided Diagnosis for Breast Ultrasound Imagery (CADBUSI) project at the University of Wisconsin-LaCrosse, under the supervision of Dr. Jeff Baggett. https://datascienceuwl.github.io/CADBUSI/
+Both the Capstone and this project are work done within the Computer Aided Diagnosis for Breast Ultrasound Imagery (CADBUSI) project at the University of Wisconsin-La Crosse, under the supervision of Dr. Jeff Baggett. https://datascienceuwl.github.io/CADBUSI/
 
 ## Goal
 
