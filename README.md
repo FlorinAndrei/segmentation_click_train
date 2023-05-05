@@ -4,9 +4,15 @@ This is an extension of my Capstone project: https://github.com/FlorinAndrei/dat
 
 Both the Capstone and this project are work done within the Computer Aided Diagnosis for Breast Ultrasound Imagery (CADBUSI) project at the University of Wisconsin-La Crosse, under the supervision of Dr. Jeff Baggett. https://datascienceuwl.github.io/CADBUSI/
 
-## Goal
+## Goals and general description
 
 Train off-the-shelf image segmentation models to respond to user feedback. The user provides feedback by clicking the image. The user may provide positive feedback ("this is a region of interest") or negative feedback ("this is not a region of interest").
+
+Articles on Towards Data Science describing the project in detail:
+
+https://towardsdatascience.com/train-image-segmentation-models-to-accept-user-feedback-via-voronoi-tiling-part-1-8ab85d410d29
+
+https://towardsdatascience.com/train-image-segmentation-models-to-accept-user-feedback-via-voronoi-tiling-part-2-1f02eebbddb9
 
 ## Algorithm
 
