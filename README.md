@@ -8,6 +8,8 @@ Both the Capstone and this project are work done within the Computer Aided Diagn
 
 Train off-the-shelf image segmentation models to respond to user feedback. The user provides feedback by clicking the image. The user may provide positive feedback ("this is a region of interest") or negative feedback ("this is not a region of interest").
 
+For this project, I've created a technique for generating synthetic training data that closely simulates feedback from human operators. Human input is slow and costly to produce. This technique has drastically cut down the time and the cost for generating this data.
+
 Articles on Towards Data Science describing the project in detail:
 
 https://towardsdatascience.com/train-image-segmentation-models-to-accept-user-feedback-via-voronoi-tiling-part-1-8ab85d410d29
